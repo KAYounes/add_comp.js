@@ -1,11 +1,12 @@
 import chalk from 'chalk';
-import Validations from './Validations.js';
 import { Option } from 'commander';
-import PathHandler from './PathHandler.js';
 import fs from 'fs';
-import os from 'os';
 import path from 'path';
+
 import CLIConfigurationHandler from './CommandLine.js';
+import PathHandler from './PathHandler.js';
+import Validations from './Validations.js';
+
 class Configuration {
   #CONFIGURATION_ITEMS = [
     new ConfigurationItem({
@@ -66,8 +67,6 @@ class Configuration {
 
   #DEFAULT_CONFIG = {};
 
-  #CLI_OPTIONS = [];
-
   #projectConfig = new ProjectConfigurationsHandler();
 
   #CLIConfigs;
@@ -81,46 +80,22 @@ class Configuration {
 
     this.#CLIConfigs = new CLIConfigurationHandler(this.#CONFIGURATION_ITEMS);
 
-    await this.readProjectConfig();
+    await this.#readProjectConfig();
   }
-
-  //   #OPTION_KEYS = [
-  //     'CREATE_CSS_FILE',
-  //     'CREATE_CSS_FILE_AS_MODULE',
-  //     'CREATE_COMPONENT_INDEX',
-  //     'ADD_CHILDREN_PROPS',
-  //     'ADD_USE_CLIENT_DIRECTIVE',
-  //     'USE_INLINE_EXPORT',
-  //     'ADD_X_TO_EXTENSION',
-  //     'CSS_FILE_NAME',
-  //     'COMPONENT_FILE_EXTENSION',
-  //   ];
-
-  //   #CLI_OPTIONS = [
-  //     new OptionWrapper('CREATE_CSS_FILE', new Option('-s, --add-css'), true),
-  //     new OptionWrapper('CREATE_CSS_FILE_AS_MODULE', new Option('-m, --css-as-module'), true),
-  //     new OptionWrapper('CREATE_COMPONENT_INDEX', new Option('-i --create-index'), true),
-  //     new OptionWrapper('ADD_CHILDREN_PROPS', new Option('-c --add-children-props'), true),
-  //     new OptionWrapper('ADD_USE_CLIENT_DIRECTIVE', new Option('-u --add-use-client'), true),
-  //     new OptionWrapper('USE_INLINE_EXPORT', new Option('-l --use-inline-export'), true),
-  //     new OptionWrapper('ADD_X_TO_EXTENSION', new Option('-x --add-x'), true),
-  //     new OptionWrapper('CSS_FILE_NAME', new Option('-n --css-name <name>')),
-  //     new OptionWrapper('COMPONENT_FILE_EXTENSION', new Option('-e --file-ext <ext>')),
-  //   ];
 
   getMergedConfiguration() {
     return {
-      ...this.getDefualtConfigurations(),
-      ...this.getProjectConfigurations(),
-      ...this.getCLIConfigurations(),
+      ...this.#getDefualtConfigurations(),
+      ...this.#getProjectConfigurations(),
+      ...this.#getCLIConfigurations(),
     };
   }
 
-  getDefualtConfigurations() {
+  #getDefualtConfigurations() {
     return this.#DEFAULT_CONFIG;
   }
 
-  getCLIConfigurations() {
+  #getCLIConfigurations() {
     const CLI_CONFIGS_UNMAPPED = this.#CLIConfigs.getOptions();
 
     const CLI_CONFIGS = {};
@@ -133,7 +108,7 @@ class Configuration {
     return CLI_CONFIGS;
   }
 
-  getProjectConfigurations() {
+  #getProjectConfigurations() {
     const projectConfiguration = {};
 
     for (let key of this.#CONFIG_ITEMS_KEYS) {
@@ -143,7 +118,7 @@ class Configuration {
     return projectConfiguration;
   }
 
-  async readProjectConfig() {
+  async #readProjectConfig() {
     await this.#projectConfig.load();
   }
 }
@@ -205,17 +180,17 @@ class ConfigurationItem {
     this.ITEM_KEY = itemKey;
     this.CLI_OPTION = cliOption;
     if (negateCLIOption) {
-      this.NEGATED_CLI_OPTION = this.getNegatedCLIOption();
+      this.NEGATED_CLI_OPTION = this.#getNegatedCLIOption();
     }
     this.DEFAULT = defaultValue;
-    this.CLI_OPTION_KEY = this.getCLIOptionKey();
+    this.CLI_OPTION_KEY = this.#getCLIOptionKey();
   }
 
-  getCLIOptionKey() {
+  #getCLIOptionKey() {
     return this.CLI_OPTION.long.slice(2).replace(/-([a-zA-Z0-9])/g, (m, group) => group.toUpperCase());
   }
 
-  getNegatedCLIOption() {
+  #getNegatedCLIOption() {
     if (!Validations.isDefined({ args: [this.CLI_OPTION], allowNull: false })) {
       throw Error(chalk.red('Cannot negate option, as option is not defined'));
     }
