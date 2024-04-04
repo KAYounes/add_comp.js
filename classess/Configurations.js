@@ -7,46 +7,106 @@ import os from 'os';
 import path from 'path';
 import CLIConfigurationHandler from './CommandLine.js';
 class Configuration {
-  //   constructor() {
-  //     // this.options = [
-  //     //   new OptionWrapper('CREATE_CSS_FILE', new Option('-s, --add-css'), true),
-  //     //   new OptionWrapper('CREATE_CSS_FILE_AS_MODULE', new Option('-m, --css-as-module'), true),
-  //     //   new OptionWrapper('CREATE_COMPONENT_INDEX', new Option('-i --create-index'), true),
-  //     //   new OptionWrapper('ADD_CHILDREN_PROPS', new Option('-c --add-children-props'), true),
-  //     //   new OptionWrapper('ADD_USE_CLIENT_DIRECTIVE', new Option('-u --add-use-client'), true),
-  //     //   new OptionWrapper('USE_INLINE_EXPORT', new Option('-l --use-inline-export'), true),
-  //     //   new OptionWrapper('ADD_X_TO_EXTENSION', new Option('-x --add-x'), true),
-  //     //   new OptionWrapper('CSS_FILE_NAME', new Option('-n --css-name <name>')),
-  //     //   new OptionWrapper('COMPONENT_FILE_EXTENSION', new Option('-e --file-ext <ext>')),
-  //     // ];
-  //   }
-
-  #OPTION_KEYS = [
-    'CREATE_CSS_FILE',
-    'CREATE_CSS_FILE_AS_MODULE',
-    'CREATE_COMPONENT_INDEX',
-    'ADD_CHILDREN_PROPS',
-    'ADD_USE_CLIENT_DIRECTIVE',
-    'USE_INLINE_EXPORT',
-    'ADD_X_TO_EXTENSION',
-    'CSS_FILE_NAME',
-    'COMPONENT_FILE_EXTENSION',
+  #CONFIGURATION_ITEMS = [
+    new ConfigurationItem({
+      itemKey: 'CREATE_CSS_FILE',
+      defaultValue: true,
+      cliOption: new Option('-s, --add-css'),
+      negateCLIOption: true,
+    }),
+    new ConfigurationItem({
+      itemKey: 'CREATE_CSS_FILE_AS_MODULE',
+      defaultValue: true,
+      cliOption: new Option('-m, --css-as-module'),
+      negateCLIOption: true,
+    }),
+    new ConfigurationItem({
+      itemKey: 'CREATE_COMPONENT_INDEX',
+      defaultValue: true,
+      cliOption: new Option('-i --create-index'),
+      negateCLIOption: true,
+    }),
+    new ConfigurationItem({
+      itemKey: 'ADD_CHILDREN_PROPS',
+      defaultValue: false,
+      cliOption: new Option('-c --add-children-props'),
+      negateCLIOption: true,
+    }),
+    new ConfigurationItem({
+      itemKey: 'ADD_USE_CLIENT_DIRECTIVE',
+      defaultValue: false,
+      cliOption: new Option('-u --add-use-client'),
+      negateCLIOption: true,
+    }),
+    new ConfigurationItem({
+      itemKey: 'USE_INLINE_EXPORT',
+      defaultValue: false,
+      cliOption: new Option('-l --use-inline-export'),
+      negateCLIOption: true,
+    }),
+    new ConfigurationItem({
+      itemKey: 'ADD_X_TO_EXTENSION',
+      defaultValue: false,
+      cliOption: new Option('-x --add-x'),
+      negateCLIOption: true,
+    }),
+    new ConfigurationItem({
+      itemKey: 'CSS_FILE_NAME',
+      defaultValue: 'COMPONENT_NAME',
+      cliOption: new Option('-n --css-name <name>'),
+    }),
+    new ConfigurationItem({
+      itemKey: 'COMPONENT_FILE_EXTENSION',
+      defaultValue: 'js',
+      cliOption: new Option('-e --file-ext <ext>'),
+    }),
   ];
 
-  #CLI_OPTIONS = [
-    new OptionWrapper('CREATE_CSS_FILE', new Option('-s, --add-css'), true),
-    new OptionWrapper('CREATE_CSS_FILE_AS_MODULE', new Option('-m, --css-as-module'), true),
-    new OptionWrapper('CREATE_COMPONENT_INDEX', new Option('-i --create-index'), true),
-    new OptionWrapper('ADD_CHILDREN_PROPS', new Option('-c --add-children-props'), true),
-    new OptionWrapper('ADD_USE_CLIENT_DIRECTIVE', new Option('-u --add-use-client'), true),
-    new OptionWrapper('USE_INLINE_EXPORT', new Option('-l --use-inline-export'), true),
-    new OptionWrapper('ADD_X_TO_EXTENSION', new Option('-x --add-x'), true),
-    new OptionWrapper('CSS_FILE_NAME', new Option('-n --css-name <name>')),
-    new OptionWrapper('COMPONENT_FILE_EXTENSION', new Option('-e --file-ext <ext>')),
-  ];
+  #CONFIG_ITEMS_KEYS = [];
 
-  projectConfig = new ProjectConfigurationsHandler();
-  CLIConfigs = new CLIConfigurationHandler(this.#CLI_OPTIONS);
+  #DEFAULT_CONFIG = {};
+
+  #CLI_OPTIONS = [];
+
+  #projectConfig = new ProjectConfigurationsHandler();
+
+  #CLIConfigs;
+
+  async init() {
+    this.#CONFIG_ITEMS_KEYS = this.#CONFIGURATION_ITEMS.map((item) => item.ITEM_KEY);
+
+    for (let item of this.#CONFIGURATION_ITEMS) {
+      this.#DEFAULT_CONFIG[item.ITEM_KEY] = item.DEFAULT;
+    }
+
+    this.#CLIConfigs = new CLIConfigurationHandler(this.#CONFIGURATION_ITEMS);
+
+    await this.readProjectConfig();
+  }
+
+  //   #OPTION_KEYS = [
+  //     'CREATE_CSS_FILE',
+  //     'CREATE_CSS_FILE_AS_MODULE',
+  //     'CREATE_COMPONENT_INDEX',
+  //     'ADD_CHILDREN_PROPS',
+  //     'ADD_USE_CLIENT_DIRECTIVE',
+  //     'USE_INLINE_EXPORT',
+  //     'ADD_X_TO_EXTENSION',
+  //     'CSS_FILE_NAME',
+  //     'COMPONENT_FILE_EXTENSION',
+  //   ];
+
+  //   #CLI_OPTIONS = [
+  //     new OptionWrapper('CREATE_CSS_FILE', new Option('-s, --add-css'), true),
+  //     new OptionWrapper('CREATE_CSS_FILE_AS_MODULE', new Option('-m, --css-as-module'), true),
+  //     new OptionWrapper('CREATE_COMPONENT_INDEX', new Option('-i --create-index'), true),
+  //     new OptionWrapper('ADD_CHILDREN_PROPS', new Option('-c --add-children-props'), true),
+  //     new OptionWrapper('ADD_USE_CLIENT_DIRECTIVE', new Option('-u --add-use-client'), true),
+  //     new OptionWrapper('USE_INLINE_EXPORT', new Option('-l --use-inline-export'), true),
+  //     new OptionWrapper('ADD_X_TO_EXTENSION', new Option('-x --add-x'), true),
+  //     new OptionWrapper('CSS_FILE_NAME', new Option('-n --css-name <name>')),
+  //     new OptionWrapper('COMPONENT_FILE_EXTENSION', new Option('-e --file-ext <ext>')),
+  //   ];
 
   getMergedConfiguration() {
     return {
@@ -57,26 +117,17 @@ class Configuration {
   }
 
   getDefualtConfigurations() {
-    return {
-      CREATE_CSS_FILE: true,
-      CREATE_CSS_FILE_AS_MODULE: true,
-      CREATE_COMPONENT_INDEX: true,
-      ADD_CHILDREN_PROPS: false,
-      ADD_USE_CLIENT_DIRECTIVE: false,
-      USE_INLINE_EXPORT: false,
-      ADD_X_TO_EXTENSION: false,
-      CSS_FILE_NAME: 'COMPONENT_NAME',
-      COMPONENT_FILE_EXTENSION: 'js',
-    };
+    return this.#DEFAULT_CONFIG;
   }
 
   getCLIConfigurations() {
-    const CLI_CONFIGS_UNMAPPED = this.CLIConfigs.getOptions();
+    const CLI_CONFIGS_UNMAPPED = this.#CLIConfigs.getOptions();
 
     const CLI_CONFIGS = {};
-    for (let option of this.#CLI_OPTIONS) {
-      if (option.OPTION_KEY in CLI_CONFIGS_UNMAPPED)
-        CLI_CONFIGS[option.VARIABLE_KEY] = CLI_CONFIGS_UNMAPPED[option.OPTION_KEY];
+
+    for (let configurationItem of this.#CONFIGURATION_ITEMS) {
+      if (configurationItem.CLI_OPTION_KEY in CLI_CONFIGS_UNMAPPED)
+        CLI_CONFIGS[configurationItem.ITEM_KEY] = CLI_CONFIGS_UNMAPPED[configurationItem.CLI_OPTION_KEY];
     }
 
     return CLI_CONFIGS;
@@ -85,15 +136,15 @@ class Configuration {
   getProjectConfigurations() {
     const projectConfiguration = {};
 
-    for (let key of this.#OPTION_KEYS) {
-      if (key in this.projectConfig.CONFIGS) projectConfiguration[key] = this.projectConfig.CONFIGS[key];
+    for (let key of this.#CONFIG_ITEMS_KEYS) {
+      if (key in this.#projectConfig.CONFIGS) projectConfiguration[key] = this.#projectConfig.CONFIGS[key];
     }
 
     return projectConfiguration;
   }
 
   async readProjectConfig() {
-    await this.projectConfig.load();
+    await this.#projectConfig.load();
   }
 }
 
@@ -145,27 +196,31 @@ class ProjectConfigurationsHandler {
   }
 }
 
-class OptionWrapper {
-  constructor(variable_key, option, negateableOption, default_value) {
-    if (!Validations.isDefined({ args: [variable_key, option], allowNull: false })) {
-      throw Error(chalk.red('Option Constructor: option_name, option are required parameters'));
+class ConfigurationItem {
+  constructor({ itemKey, defaultValue, cliOption, negateCLIOption }) {
+    if (!Validations.isDefined({ args: [itemKey, defaultValue, cliOption], allowNull: false })) {
+      throw Error(chalk.red('ConfigurationItem Constructor: required parameters missing'));
     }
 
-    this.VARIABLE_KEY = variable_key;
-    this.OPTION_OBJECT = option;
-    if (negateableOption) {
-      this.NEGATED_OPTION_OBJECT = this.negateOption();
+    this.ITEM_KEY = itemKey;
+    this.CLI_OPTION = cliOption;
+    if (negateCLIOption) {
+      this.NEGATED_CLI_OPTION = this.getNegatedCLIOption();
     }
-    this.default = default_value;
-    this.OPTION_KEY = this.OPTION_OBJECT.long.slice(2).replace(/-([a-zA-Z0-9])/g, (m, group) => group.toUpperCase());
+    this.DEFAULT = defaultValue;
+    this.CLI_OPTION_KEY = this.getCLIOptionKey();
   }
 
-  negateOption() {
-    if (!Validations.isDefined({ args: [this.OPTION_OBJECT], allowNull: false })) {
+  getCLIOptionKey() {
+    return this.CLI_OPTION.long.slice(2).replace(/-([a-zA-Z0-9])/g, (m, group) => group.toUpperCase());
+  }
+
+  getNegatedCLIOption() {
+    if (!Validations.isDefined({ args: [this.CLI_OPTION], allowNull: false })) {
       throw Error(chalk.red('Cannot negate option, as option is not defined'));
     }
 
-    let { short, long } = this.OPTION_OBJECT;
+    let { short, long } = this.CLI_OPTION;
     short = short.trim().replace(/^-/, '-no-');
     long = long.trim().replace(/^--/, '--no-');
     let flag = `${short}, ${long}`;

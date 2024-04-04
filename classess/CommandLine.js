@@ -1,13 +1,14 @@
 import { program } from 'commander';
 
 class CLIConfigurationHandler {
-  constructor(optionWrappers) {
+  constructor(configurationItems) {
     program.argument('<name>', 'component name');
 
-    for (let optionWrapper of optionWrappers) {
-      program.addOption(optionWrapper.OPTION_OBJECT);
-      if (optionWrapper.NEGATED_OPTION_OBJECT) {
-        program.addOption(optionWrapper.NEGATED_OPTION_OBJECT);
+    for (let configurationItem of configurationItems) {
+      program.addOption(configurationItem.CLI_OPTION);
+
+      if (configurationItem.NEGATED_CLI_OPTION) {
+        program.addOption(configurationItem.NEGATED_CLI_OPTION);
       }
     }
 
