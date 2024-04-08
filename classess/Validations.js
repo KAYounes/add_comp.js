@@ -4,7 +4,13 @@ class Validations {
     return !args.some((arg) => arg === undefined || (allowNull && arg === null));
   }
 
-  static isTypeString(...args) {}
+  static isString(...args) {
+    return args.every((arg) => typeof arg === 'string');
+  }
+
+  static isBoolean(...args) {
+    return args.every((arg) => typeof arg === 'boolean');
+  }
 
   static isObject(query) {
     if (!query || typeof query !== 'object') {
