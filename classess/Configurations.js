@@ -96,6 +96,10 @@ class Configuration {
     };
   }
 
+  getNameTokens() {
+    return this.#CLIConfigs.getArguments();
+  }
+
   #getDefualtConfigurations() {
     return this.#DEFAULT_CONFIG;
   }
