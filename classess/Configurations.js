@@ -61,6 +61,11 @@ class Configuration {
       defaultValue: 'js',
       cliOption: new Option('-e --file-ext <ext>'),
     }),
+    new ConfigurationItem({
+      itemKey: 'DASH_REPLACEMENT',
+      defaultValue: null,
+      cliOption: new Option('-r --dash-replacement <replacement>'),
+    }),
   ];
 
   #CONFIG_ITEMS_KEYS = [];
