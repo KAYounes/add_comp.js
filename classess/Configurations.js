@@ -3,7 +3,7 @@ import { Option } from 'commander';
 import fs from 'fs';
 import path from 'path';
 
-import CLIConfigurationHandler from './CommandLine.js';
+import CLIHandler from './CLIHandler.js';
 import PathHandler from './PathHandler.js';
 import Validations from './Validations.js';
 
@@ -78,7 +78,7 @@ class Configuration {
       this.#DEFAULT_CONFIG[item.ITEM_KEY] = item.DEFAULT;
     }
 
-    this.#CLIConfigs = new CLIConfigurationHandler(this.#CONFIGURATION_ITEMS);
+    this.#CLIConfigs = new CLIHandler(this.#CONFIGURATION_ITEMS);
 
     await this.#readProjectConfig();
   }
