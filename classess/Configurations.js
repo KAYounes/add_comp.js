@@ -135,28 +135,9 @@ class ProjectConfigurationsHandler {
   }
 
   async #getConfigurationFileContent() {
-    // let project_root = PathHandler.__dirname;
-    let project_root =
-      'C:\\Users\\kayeg\\Documents\\Main Folders\\f.c__coding\\web_programming\\npm_packages\\gen_rcomp\\node_modules\\package';
-
     const CONFIG_FILE_NAME = 'make_comp.config.js';
 
-    // look for file in current directory
-    if (fs.existsSync(path.join(PathHandler.__dirname, CONFIG_FILE_NAME))) {
-      project_root = PathHandler.__dirname;
-    } else {
-      // set project_root to parent directory of node_modules
-      // for-loop as fail safe to avoid infinite loops
-      for (let i = 0; i < 100; i++) {
-        let found_node_modules = path.basename(project_root) == 'node_modules';
-        project_root = path.resolve(project_root, '..');
-        if (found_node_modules) break;
-      }
-
-      //   project_root = path.resolve(cwd, '..');
-    }
-
-    const PATH_TO_CONFIG_FILE = path.join(project_root, CONFIG_FILE_NAME);
+    const PATH_TO_CONFIG_FILE = PathHandler.getPathTo(CONFIG_FILE_NAME);
 
     if (fs.existsSync(PATH_TO_CONFIG_FILE)) {
       const module_path = 'file:' + PATH_TO_CONFIG_FILE;
