@@ -54,7 +54,7 @@ class Configuration {
     new ConfigurationItem({
       itemKey: 'CSS_FILE_NAME',
       defaultValue: 'COMPONENT_NAME',
-      cliOption: new Option('-n --css-name <name>'),
+      cliOption: new Option('-n --css-name [name]').preset('COMPONENT_NAME'),
     }),
     new ConfigurationItem({
       itemKey: 'COMPONENT_FILE_EXTENSION',
