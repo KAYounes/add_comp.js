@@ -58,10 +58,6 @@ class Configuration {
     new ConfigurationItem({
       itemKey: 'COMPONENT_FILE_EXTENSION',
       defaultValue: 'js',
-    new ConfigurationItem({
-      itemKey: 'DASH_REPLACEMENT',
-      defaultValue: null,
-      cliOption: new Option('-r --dash-replacement <replacement>'),
       cliOption: new Option('-e --file-ext <ext>', 'Component file extension'),
     }),
   ];
