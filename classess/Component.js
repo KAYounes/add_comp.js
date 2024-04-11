@@ -94,9 +94,9 @@ class Component {
   create(template) {
     this.#COMPONENT_CONTENT = template;
     this.#handleClientDirective();
-    this.#handleCSSFile();
     this.#handleChildrenProps();
     this.#handleExport();
+    this.#handleCSSImport();
     this.#handleComponentName();
   }
 
@@ -104,7 +104,7 @@ class Component {
     this.#updateComponent(this.#COMPONENT_CONTENT.replaceAll('COMPONENT_NAME', this.COMPONENT_NAME));
   }
 
-  #handleCSSFile() {
+  #handleCSSImport() {
     // const import_line_index = this.#splitByLine().findIndex((element) => element.includes('CSS_FILE_NAME'));
     const target_indecies = this.#getIndeciesContains('CSS_FILE_NAME');
 
