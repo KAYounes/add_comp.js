@@ -6,7 +6,7 @@
   - [Passing Component Name](#passing-component-name)
   - [Options](#options)
     - [Negating flags](#negating-flags)
-- [Override Default Configurations \(addcomp.config.js\)](#override-default-configurations-addcomp.config.js)
+- [Override Default Configurations \(addcomp.config.js\)](#override-defualt-configurations-addcompconfigjs)
   - [File structure](#file-structure)
   - [Options](#options-1)
   - [Conflicts](#conflicts)
