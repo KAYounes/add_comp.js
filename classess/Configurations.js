@@ -108,7 +108,7 @@ class Configuration {
     const CLI_CONFIGS = {};
 
     for (let configurationItem of this.#CONFIGURATION_ITEMS) {
-      if (configurationItem.CLI_OPTION_KEY in CLI_CONFIGS_UNMAPPED)
+      if (this.#validConfigValue(CLI_CONFIGS_UNMAPPED[configurationItem.CLI_OPTION_KEY]))
         CLI_CONFIGS[configurationItem.ITEM_KEY] = CLI_CONFIGS_UNMAPPED[configurationItem.CLI_OPTION_KEY];
     }
 
@@ -119,7 +119,8 @@ class Configuration {
     const projectConfiguration = {};
 
     for (let key of this.#CONFIG_ITEMS_KEYS) {
-      if (key in this.#projectConfig.CONFIGS) projectConfiguration[key] = this.#projectConfig.CONFIGS[key];
+      if (this.#validConfigValue(this.#projectConfig.CONFIGS[key]))
+        projectConfiguration[key] = this.#projectConfig.CONFIGS[key];
     }
 
     return projectConfiguration;
