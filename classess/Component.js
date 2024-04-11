@@ -91,12 +91,12 @@ class Component {
     return `${this.#toCamelCase(name, false)}${CREATE_CSS_FILE_AS_MODULE ? '.module' : ''}.css`;
   }
 
-  create(template) {
+  create(template, state) {
     this.#COMPONENT_CONTENT = template;
-    this.#handleClientDirective();
-    this.#handleChildrenProps();
-    this.#handleExport();
+    this.#handleClientDirective(state);
     this.#handleCSSImport();
+    this.#handleChildrenProps(state);
+    this.#handleExport(state);
     this.#handleComponentName();
   }
 
@@ -117,31 +117,37 @@ class Component {
 
   // #handleIndexFile() {}
 
-  #handleChildrenProps() {
+  #handleChildrenProps(state) {
     const target_indecies = this.#getIndeciesContains('CHILDREN_PROPS');
 
     if (this.#CREATE_CONFIG.ADD_CHILDREN_PROPS) {
       this.#updateComponent(this.#COMPONENT_CONTENT.replaceAll('{ CHILDREN_PROPS }', '{ children }'));
+      state.push([4, 'add "{ children }"', true]);
     } else {
       this.#updateComponent(this.#COMPONENT_CONTENT.replaceAll('{ CHILDREN_PROPS }', '{}'));
       this.#removeFromComponent(target_indecies.at(-1), 1);
+      state.push([4, 'add "{ children }"', false]);
     }
   }
 
-  #handleClientDirective() {
-    if (!this.#CREATE_CONFIG.ADD_USE_CLIENT_DIRECTIVE) return;
+  #handleClientDirective(state) {
+    if (!this.#CREATE_CONFIG.ADD_USE_CLIENT_DIRECTIVE) return state.push([5, 'add "use client"', false]);
     this.#addToComponent(0, '"use client"');
+    state.push([5, 'add "use client"', true]);
   }
 
-  #handleExport() {
+  #handleExport(state) {
     const target_indecies = this.#getIndeciesContains('export default');
 
     if (this.#CREATE_CONFIG.USE_INLINE_EXPORT) {
       // order matters
       this.#removeFromComponent(target_indecies[1], 1);
+      this.#removeFromComponent(target_indecies[1] - 1, 1);
       this.#removeFromComponent(target_indecies[0] + 1, 1);
+      state.push([6, 'inline export', true]);
     } else {
       this.#removeFromComponent(target_indecies[0], 1);
+      state.push([6, 'inline export', false]);
     }
   }
 
