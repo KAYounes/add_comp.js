@@ -199,7 +199,7 @@ class ProjectConfigurationsHandler {
 
 class ConfigurationItem {
   constructor({ itemKey, defaultValue, cliOption, negateCLIOption }) {
-    if (!Validations.isDefined({ args: [itemKey, defaultValue, cliOption], allowNull: false })) {
+    if (!Validations.isDefined(itemKey, defaultValue, cliOption)) {
       throw Error(chalk.red('ConfigurationItem Constructor: required parameters missing'));
     }
 
@@ -217,7 +217,7 @@ class ConfigurationItem {
   }
 
   #getNegatedCLIOption() {
-    if (!Validations.isDefined({ args: [this.CLI_OPTION], allowNull: false })) {
+    if (!Validations.isDefined(this.CLI_OPTION)) {
       throw Error(chalk.red('Cannot negate option, as option is not defined'));
     }
 

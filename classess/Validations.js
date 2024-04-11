@@ -2,6 +2,16 @@ class Validations {
   static isDefined({ args, allowNull }) {
     // return args.every((arg) => arg !== undefined && allowNull && args !== null);
     return !args.some((arg) => arg === undefined || (allowNull && arg === null));
+  static isUndefined(args) {
+    return !args.some((arg) => arg === undefined);
+  }
+
+  static isNull(...args) {
+    return !args.some((arg) => arg === null);
+  }
+
+  static isDefined(...args) {
+    return !args.some((arg) => arg === undefined && arg === null);
   }
 
   static isString(...args) {
@@ -10,6 +20,10 @@ class Validations {
 
   static isBoolean(...args) {
     return args.every((arg) => typeof arg === 'boolean');
+  }
+
+  static isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0;
   }
 
   static isObject(query) {
