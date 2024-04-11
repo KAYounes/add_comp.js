@@ -1,7 +1,6 @@
-import { fileURLToPath } from 'url';
 import fs from 'fs';
-import os from 'os';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import Validations from './Validations.js';
 
 class PathHandler {

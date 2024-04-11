@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import { Option } from 'commander';
 import fs from 'fs';
-import path from 'path';
 
 import CLIHandler from './CLIHandler.js';
 import PathHandler from './PathHandler.js';

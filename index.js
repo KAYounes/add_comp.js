@@ -1,10 +1,12 @@
 import fs from 'fs';
 import os from 'os';
 
-import { Configuration } from './classess/Configurations.js';
-import PathHandler from './classess/PathHandler.js';
 import path from 'path';
 import Component from './classess/Component.js';
+import Configuration from './classess/Configurations.js';
+import Exporter from './classess/Exporter.js';
+import Logger from './classess/Logger.js';
+import PathHandler from './classess/PathHandler.js';
 
 let config = new Configuration();
 await config.init();

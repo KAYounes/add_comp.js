@@ -1,6 +1,6 @@
-import sanitize from 'sanitize-filename-truncate';
 import fs from 'fs';
 import os from 'os';
+import sanitize from 'sanitize-filename-truncate';
 
 class Component {
   COMPONENT_NAME;
