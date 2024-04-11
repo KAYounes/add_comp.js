@@ -11,59 +11,58 @@ class Configuration {
     new ConfigurationItem({
       itemKey: 'CREATE_CSS_FILE',
       defaultValue: true,
-      cliOption: new Option('-s, --add-css'),
+      cliOption: new Option('-s, --add-css', 'Create a CSS file'),
       negateCLIOption: true,
     }),
     new ConfigurationItem({
       itemKey: 'CREATE_CSS_FILE_AS_MODULE',
       defaultValue: true,
-      cliOption: new Option('-m, --css-as-module'),
+      cliOption: new Option('-m, --css-as-module', 'Create css file as a .module.css file'),
       negateCLIOption: true,
     }),
     new ConfigurationItem({
       itemKey: 'CREATE_COMPONENT_INDEX',
       defaultValue: true,
-      cliOption: new Option('-i --create-index'),
+      cliOption: new Option('-i --create-index', "Create the component's index.js file"),
       negateCLIOption: true,
     }),
     new ConfigurationItem({
       itemKey: 'ADD_CHILDREN_PROPS',
       defaultValue: false,
-      cliOption: new Option('-c --add-children-props'),
+      cliOption: new Option('-c --add-children-props', "Deconstruct children from component's props"),
       negateCLIOption: true,
     }),
     new ConfigurationItem({
       itemKey: 'ADD_USE_CLIENT_DIRECTIVE',
       defaultValue: false,
-      cliOption: new Option('-u --add-use-client'),
+      cliOption: new Option('-u --add-use-client', 'Add "use clinet" directive to component'),
       negateCLIOption: true,
     }),
     new ConfigurationItem({
       itemKey: 'USE_INLINE_EXPORT',
       defaultValue: false,
-      cliOption: new Option('-l --use-inline-export'),
+      cliOption: new Option('-l --use-inline-export', 'Export component function with declaration'),
       negateCLIOption: true,
     }),
     new ConfigurationItem({
       itemKey: 'ADD_X_TO_EXTENSION',
       defaultValue: false,
-      cliOption: new Option('-x --add-x'),
+      cliOption: new Option('-x --add-x', 'Append x to component file extension'),
       negateCLIOption: true,
     }),
     new ConfigurationItem({
       itemKey: 'CSS_FILE_NAME',
       defaultValue: 'COMPONENT_NAME',
-      cliOption: new Option('-n --css-name [name]').preset('COMPONENT_NAME'),
+      cliOption: new Option('-n --css-name [name]', 'CSS file name').preset('COMPONENT_NAME'),
     }),
     new ConfigurationItem({
       itemKey: 'COMPONENT_FILE_EXTENSION',
       defaultValue: 'js',
-      cliOption: new Option('-e --file-ext <ext>'),
-    }),
     new ConfigurationItem({
       itemKey: 'DASH_REPLACEMENT',
       defaultValue: null,
       cliOption: new Option('-r --dash-replacement <replacement>'),
+      cliOption: new Option('-e --file-ext <ext>', 'Component file extension'),
     }),
   ];
 
