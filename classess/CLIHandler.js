@@ -2,7 +2,7 @@ import { program } from 'commander';
 
 class CLIHandler {
   constructor(configurationItems) {
-    program.argument('<dirs...>', 'component name');
+    program.argument('<tokens...>', 'component name');
 
     for (let configurationItem of configurationItems) {
       program.addOption(configurationItem.CLI_OPTION);
