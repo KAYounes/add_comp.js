@@ -79,7 +79,11 @@ class Configuration {
 
     this.#CLIConfigs = new CLIHandler(this.#CONFIGURATION_ITEMS);
 
-    await this.#readProjectConfig();
+    return this.#readProjectConfig();
+  }
+
+  getConfigurationItems() {
+    return this.#CONFIGURATION_ITEMS;
   }
 
   getMergedConfiguration() {
@@ -122,29 +126,67 @@ class Configuration {
   }
 
   async #readProjectConfig() {
-    await this.#projectConfig.load();
+    await this.#projectConfig.load(this.#CONFIG_ITEMS_KEYS);
+  }
+
+  #validConfigValue(value) {
+    if (value === undefined) return false;
+    if (value === null) return false;
+    if (value === '') return false;
+    if (!/[a-zA-Z$_]+[a-zA-Z0-9_$]*/.test(value)) return false;
+    return true;
   }
 }
 
 class ProjectConfigurationsHandler {
   PROJECT_CONFIG_EXISTS = false;
   CONFIGS = {};
+  CONFIG_FILE_NAME = 'addcomp.config.js';
 
-  async load() {
-    const CONTENT = await this.#getConfigurationFileContent();
-    const IS_VALID = this.#isValidConfigurationFileContent(CONTENT);
-    this.PROJECT_CONFIG_EXISTS = IS_VALID;
-    if (IS_VALID) this.CONFIGS = CONTENT;
+  async load(keys) {
+    return await this.#getConfigurationFileContent()
+      .then((DEF) => {
+        this.CONFIGS = this.#extractKeysFromConfig(keys, DEF);
+        return this.CONFIGS;
+      })
+      .then((configs) => {
+        if (Validations.isObjectEmpty(configs)) throw Error('no configurations were set');
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  #extractKeysFromConfig(keys, source) {
+    return keys.reduce(function (newObj, key) {
+      if (key in source) newObj[key] = source[key];
+      return newObj;
+    }, {});
   }
 
   async #getConfigurationFileContent() {
-    const CONFIG_FILE_NAME = 'make_comp.config.js';
+    const CONFIG_FILE_NAME = 'addcomp.config.js';
 
-    const PATH_TO_CONFIG_FILE = PathHandler.getPathTo(CONFIG_FILE_NAME);
+    const PATH_TO_CONFIG_FILE = PathHandler.getPathTo(CONFIG_FILE_NAME, PathHandler.__project_root);
 
     if (fs.existsSync(PATH_TO_CONFIG_FILE)) {
       const module_path = 'file:' + PATH_TO_CONFIG_FILE;
-      return await import(module_path).then((module) => module.default);
+
+      return import(module_path)
+        .then((module) => {
+          if (!('default' in module)) {
+            throw Error(`dose not export default`);
+          } else if (!Validations.isObject(module.default)) {
+            throw Error(`exports a non-object variable`);
+          }
+
+          return module.default;
+        })
+        .catch((error) => {
+          throw error;
+        });
+    } else {
+      throw Error(`file not found`);
     }
   }
 
