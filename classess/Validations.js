@@ -1,7 +1,4 @@
 class Validations {
-  static isDefined({ args, allowNull }) {
-    // return args.every((arg) => arg !== undefined && allowNull && args !== null);
-    return !args.some((arg) => arg === undefined || (allowNull && arg === null));
   static isUndefined(args) {
     return !args.some((arg) => arg === undefined);
   }
