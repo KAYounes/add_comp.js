@@ -10,6 +10,11 @@
   - [File structure](#file-structure)
   - [Options](#options-1)
   - [Conflicts](#conflicts)
+- [Media](#media)
+  - [help](#help)
+  - [logs](#logs)
+    - [Success](#success)
+    - [Fail](#fail)
 
 ## Usage
 
@@ -95,7 +100,9 @@ Options:
 > export * from './ButtonGroupGird.tsx';
 > export { default } from './ButtonGroupGird.tsx';
 > ```
-> 
+>
+> ```
+>
 > ```
 
 ## Using The Command Line
@@ -107,12 +114,12 @@ The command line is used to pass the compoent name, as well as, options to custo
 You can pass the component name as a single string or a space seperated word which would automatically be formated.
 
 > For Example
-> 
+>
 > ```
-> 
+>
 > npx addcomp button group grid
-> 
-> ````
+>
+> ```
 
 This will generate a component with the name `ButtonGroupGrid`.
 
@@ -174,7 +181,7 @@ const configs = {
 };
 
 export default configs;
-````
+```
 
 ### Options
 
@@ -209,3 +216,27 @@ If there is a conflict between the local `.confg` file and the CLI options, i.e.
 > ```
 >
 > Then, `CREATE_CSS_FILE` be resolved to `false`, since the CLI has more priority.
+
+## Media
+
+### help
+
+![npx addcomp -h](readme/help.png)
+
+### logs
+
+#### Success
+
+```
+ npx addcomp@latest button-group grid -no-m -u -n styles -l
+```
+
+![success logs](readme/success.png)
+
+#### Fail
+
+```
+ npx addcomp@latest button-group grid -no-m -u -n styles -l
+```
+
+![fail logs](readme/fail.png)
