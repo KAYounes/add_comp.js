@@ -30,51 +30,9 @@ class Component {
       ADD_USE_CLIENT_DIRECTIVE,
       USE_INLINE_EXPORT,
     };
-    // this.name = this.#parseRawName(name_tokens, DASH_REPLACEMENT);
     this.COMPONENT_NAME = this.#parseNameTokens(name_tokens);
     this.FILE_NAME = `${this.COMPONENT_NAME}.${COMPONENT_FILE_EXTENSION}${ADD_X_TO_EXTENSION ? 'x' : ''}`;
     this.CSS_FILE_NAME = this.#createCSSFileName(CSS_FILE_NAME, CREATE_CSS_FILE_AS_MODULE, DASH_REPLACEMENT);
-  }
-
-  #parseRawName(name_tokens, DASH_REPLACEMENT) {
-    if (!Array.isArray(name_tokens)) name_tokens = [name_tokens];
-    let sanitized_tokens = name_tokens.map(function (e) {
-      // handle ?/string expanding as a path (happens with git bash on windows when ?/string is typed)
-      // extracts from C:/Program Files/Program Files/Git '?C:/Program Files/Program Files/Git/string'
-      const path_expansion = e.match(/(?<=\?)(.*)(?=\/)/)?.[0];
-      if (fs.existsSync(path_expansion)) {
-        e = e.replace(path_expansion, '');
-      }
-
-      // replace '-' with replacement if defined, else keep '-'
-      if (DASH_REPLACEMENT) {
-        e = e.replaceAll('-', DASH_REPLACEMENT);
-      }
-
-      // replace invalid characters with -, including space
-      e = sanitize(e, {
-        replacement: () => '-',
-        convertWhiteSpace: '-',
-      });
-
-      // replace '-' between words with space " "
-      // so later on it this foo-fee, foo--fee, ... will become fooFee
-      e = e.replaceAll(/(?<=\w)-+(?=\w)/g, ' ');
-
-      // remove remaing "-"
-      e = e.replaceAll('-', '');
-
-      // split over space " "
-      return e.split(' ');
-    });
-
-    sanitized_tokens = sanitized_tokens.flat();
-
-    // convert to camelCase by space " "
-    return sanitized_tokens.reduce(function (acc, val, index) {
-      if (index === 0) return val;
-      return acc + val.replace(/^./, (m) => m.toUpperCase());
-    });
   }
 
   #parseNameTokens(tokens, DASH_REPLACEMENT) {
