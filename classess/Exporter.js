@@ -13,10 +13,6 @@ class Exporter {
 
     const ITEMS = configs.getConfigurationItems();
 
-    console.table(CONFIG_DEFAULTS);
-    console.table(CONFIG_PROJECT);
-    console.table(CONFIG_CLI);
-
     const HEADER_COLOR = (o) => chalk.yellow(o);
 
     const table = new Table({
