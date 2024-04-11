@@ -1,5 +1,16 @@
 # NPM addcomp.js
 
+- [Usage](#usage)
+- [Quick Guide](#quick-guide)
+- [Using The Command Line](#using-the-command-line)
+  - [Passing Component Name](#passing-component-name)
+  - [Options](#options)
+    - [Negating flags](#negating-flags)
+- [Override Default Configurations \(addcomp.config.js\)](#override-default-configurations-addcomp.config.js)
+  - [File structure](#file-structure)
+  - [Options](#options-1)
+  - [Conflicts](#conflicts)
+
 ## Usage
 
 ```bash
