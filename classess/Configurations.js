@@ -139,7 +139,6 @@ class Configuration {
 }
 
 class ProjectConfigurationsHandler {
-  PROJECT_CONFIG_EXISTS = false;
   CONFIGS = {};
   CONFIG_FILE_NAME = 'addcomp.config.js';
 
@@ -193,7 +192,6 @@ class ProjectConfigurationsHandler {
   #isValidConfigurationFileContent(content, keys) {
     if (!Validations.isObject(content)) return false;
     return true;
-    // Validations.hasKeys(content, keys);
   }
 }
 
@@ -243,4 +241,4 @@ class ConfigurationItem {
   }
 }
 
-export { Configuration };
+export default Configuration;
