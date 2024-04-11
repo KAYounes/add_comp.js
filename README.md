@@ -18,6 +18,7 @@ npx addcomp <...tokens> [options]
 ```
 
 ## Quick Guide
+
 ```
 Usage: index [options] <tokens...>
 
@@ -51,45 +52,51 @@ Options:
   -h, --help                      display help for command
 ```
 
-e.g.
-```
-npx addcomp button group grid -s -no-m -e ts -x
-```
-
-changes in project structure
-```
-.
-├── src/
-│   └── components/
-│       └── ButtonGroupGird/
-│           ├── ButtonGroupGird.tsx
-│           ├── buttonGroupGird.css
-│           └── index.js
-├── index.js
-└── package.json
-```
-
-ButtonGroupGird.tsx
-```ts
-import React from 'react';
-import styles from "buttonGroupGird.css"
-
-function ButtonGroupGird({}) {
-  return (
-    <div>
-      <div>ButtonGroupGird</div>
-    </div>
-  );
-}
-
-export default ButtonGroupGird;
-```
-
-index.js
-```js
-export * from './ButtonGroupGird.tsx'
-export { default } from './ButtonGroupGird.tsx'
-```
+> For Example
+>
+> ```
+> npx addcomp button group grid -s -no-m -e ts -x
+> ```
+>
+> changes in project structure
+>
+> ```
+> .
+> ├── src/
+> │   └── components/
+> │       └── ButtonGroupGird/
+> │           ├── ButtonGroupGird.tsx
+> │           ├── buttonGroupGird.css
+> │           └── index.js
+> ├── index.js
+> └── package.json
+> ```
+>
+> ButtonGroupGird.tsx
+>
+> ```ts
+> import React from 'react';
+> import styles from 'buttonGroupGird.css';
+>
+> function ButtonGroupGird({}) {
+>   return (
+>     <div>
+>       <div>ButtonGroupGird</div>
+>     </div>
+>   );
+> }
+>
+> export default ButtonGroupGird;
+> ```
+>
+> index.js
+>
+> ```js
+> export * from './ButtonGroupGird.tsx';
+> export { default } from './ButtonGroupGird.tsx';
+> ```
+> 
+> ```
 
 ## Using The Command Line
 
@@ -99,50 +106,53 @@ The command line is used to pass the compoent name, as well as, options to custo
 
 You can pass the component name as a single string or a space seperated word which would automatically be formated.
 
-e.g
-```
-npx addcomp button group grid
-```
+> For Example
+> 
+> ```
+> 
+> npx addcomp button group grid
+> 
+> ````
 
 This will generate a component with the name `ButtonGroupGrid`.
 
-
 > note
-> 
+>
 > Based on how the command line parser works, any value that is not a flag, or a flag parameter is considerend a an argument for the component name
-> 
-> `npx addcomp button -s group -x -n grid`  =>  ButtonGroup
+>
+> `npx addcomp button -s group -x -n grid` => ButtonGroup
 
 ### Options
 
-| Description                                           | Short Flag | Long Flag              |
-|-------------------------------------------------------|------------|------------------------|
-| Create a CSS file                                     | -s         | --add-css              |
-|                                                       | -no-s      | --no-add-css           |
-| Create CSS file as a .module.css file                 | -m         | --css-as-module        |
-|                                                       | -no-m      | --no-css-as-module     |
-| Create the component's index.js file                  | -i         | --create-index         |
-|                                                       | -no-i      | --no-create-index      |
-| Deconstruct children from component's props           | -c         | --add-children-props   |
-|                                                       | -no-c      | --no-add-children-props|
-| Add "use client" directive to component               | -u         | --add-use-client       |
-|                                                       | -no-u      | --no-add-use-client    |
-| Export component function with declaration            | -l         | --use-inline-export    |
-|                                                       | -no-l      | --no-use-inline-export |
-| Append x to component file extension                  | -x         | --add-x                |
-|                                                       | -no-x      | --no-add-x             |
-| CSS file name (preset: "COMPONENT_NAME")              | -n         | --css-name [name]      |
-| Component file extension                              | -e         | --file-ext <ext>       |
-| Display help for command                              | -h         | --help                 |
+| Description                                 | Short Flag | Long Flag               |
+| ------------------------------------------- | ---------- | ----------------------- |
+| Create a CSS file                           | -s         | --add-css               |
+|                                             | -no-s      | --no-add-css            |
+| Create CSS file as a .module.css file       | -m         | --css-as-module         |
+|                                             | -no-m      | --no-css-as-module      |
+| Create the component's index.js file        | -i         | --create-index          |
+|                                             | -no-i      | --no-create-index       |
+| Deconstruct children from component's props | -c         | --add-children-props    |
+|                                             | -no-c      | --no-add-children-props |
+| Add "use client" directive to component     | -u         | --add-use-client        |
+|                                             | -no-u      | --no-add-use-client     |
+| Export component function with declaration  | -l         | --use-inline-export     |
+|                                             | -no-l      | --no-use-inline-export  |
+| Append x to component file extension        | -x         | --add-x                 |
+|                                             | -no-x      | --no-add-x              |
+| CSS file name (preset: "COMPONENT_NAME")    | -n         | --css-name [name]       |
+| Component file extension                    | -e         | --file-ext <ext>        |
+| Display help for command                    | -h         | --help                  |
 
 #### Negating flags
 
 To negate an option, you can prefix its flag with `no-`.
 
-e.g.
-```
--no-s --no-create-index ...
-```
+> For Example
+>
+> ```
+> -no-s --no-create-index ...
+> ```
 
 ## Override Defualt Configurations (addcomp.config.js)
 
@@ -164,39 +174,38 @@ const configs = {
 };
 
 export default configs;
-```
+````
 
 ### Options
 
-| Description                                              | Option                     | Default         | Flag                         |
-|----------------------------------------------------------|----------------------------|-----------------|------------------------------|
-| Create a CSS file                                        | CREATE_CSS_FILE            | true            | -s, --add-css                |
-| Create css file as a .module.css file                    | CREATE_CSS_FILE_AS_MODULE  | true            | -m, --css-as-module          |
-| Create the component's index.js file                     | CREATE_COMPONENT_INDEX     | true            | -i, --create-index           |
-| Deconstruct children from component's props              | ADD_CHILDREN_PROPS         | false           | -c, --add-children-props     |
-| Add "use client" directive to component                  | ADD_USE_CLIENT_DIRECTIVE   | false           | -u, --add-use-client         |
-| Export component function with declaration               | USE_INLINE_EXPORT          | false           | -l, --use-inline-export      |
-| Append x to component file extension                     | ADD_X_TO_EXTENSION         | false           | -x, --add-x                  |
-| CSS file name                                            | CSS_FILE_NAME              | COMPONENT_NAME  | -n, --css-name [name]        |
-| Component file extension                                 | COMPONENT_FILE_EXTENSION   | js              | -e, --file-ext <ext>         |
-
+| Description                                 | Option                    | Default        | Flag                     |
+| ------------------------------------------- | ------------------------- | -------------- | ------------------------ |
+| Create a CSS file                           | CREATE_CSS_FILE           | true           | -s, --add-css            |
+| Create css file as a .module.css file       | CREATE_CSS_FILE_AS_MODULE | true           | -m, --css-as-module      |
+| Create the component's index.js file        | CREATE_COMPONENT_INDEX    | true           | -i, --create-index       |
+| Deconstruct children from component's props | ADD_CHILDREN_PROPS        | false          | -c, --add-children-props |
+| Add "use client" directive to component     | ADD_USE_CLIENT_DIRECTIVE  | false          | -u, --add-use-client     |
+| Export component function with declaration  | USE_INLINE_EXPORT         | false          | -l, --use-inline-export  |
+| Append x to component file extension        | ADD_X_TO_EXTENSION        | false          | -x, --add-x              |
+| CSS file name                               | CSS_FILE_NAME             | COMPONENT_NAME | -n, --css-name [name]    |
+| Component file extension                    | COMPONENT_FILE_EXTENSION  | js             | -e, --file-ext <ext>     |
 
 ### Conflicts
 
 If there is a conflict between the local `.confg` file and the CLI options, i.e. the same option has two different values in both, then always the CLI option takes priority over the `.config` file option.
 
-e.g.
-
-```
-npx addcompt --no-add-css
-```
-
-```js
-const configs = {
-  CREATE_CSS_FILE: true
-};
-
-export default configs;
-```
-
-Then, `CREATE_CSS_FILE` be resolved to `false`, since the CLI has more priority.
+> For Example
+>
+> ```
+> npx addcompt --no-add-css
+> ```
+>
+> ```js
+> const configs = {
+>   CREATE_CSS_FILE: true,
+> };
+>
+> export default configs;
+> ```
+>
+> Then, `CREATE_CSS_FILE` be resolved to `false`, since the CLI has more priority.
