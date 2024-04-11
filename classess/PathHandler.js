@@ -5,9 +5,13 @@ import Validations from './Validations.js';
 
 class PathHandler {
   static __dirname = path.dirname(path.resolve(fileURLToPath(import.meta.url), '..'));
-  static __project_root = path.dirname(this.getPathTo('package.json'));
+  static __project_root = path.dirname(this.getPathTo('package.json', process.argv0));
   static __componets_dir = this.createPathInProject('src/componets');
   static __component_template_path = this.createPathInPackage('template.js');
+
+  static insideProject() {
+    return this.__project_root !== process.env.USERPROFILE && this.__project_root !== process.env.HOME;
+  }
 
   static createPathInProject(query) {
     return path.join(this.__project_root, query);
@@ -21,9 +25,17 @@ class PathHandler {
     return path.join(this.__componets_dir, componentName, query);
   }
 
+  static createProjectRelativePath(dest) {
+    // truncate full path "C:/Users/user/foo/project/src/component"
+    // to project rool ".../project/src/component"
+
+    if (!Validations.isString(dest)) return null;
+    if (!path.isAbsolute(dest)) dest = this.createPathInProject(dest);
+    return dest.replace(path.dirname(this.__project_root), '...');
+  }
+
   /**
-   *
-   * Returns a path from {from} to {query} if path exists
+   * Returns a path from @param from to @param query if it exists
    */
   static getPathTo(query, from) {
     const _path = this.createPathTo(query, from);
@@ -33,7 +45,6 @@ class PathHandler {
   }
 
   /**
-   *
    * Creates a path from @param from to @param query
    */
   static createPathTo(query, from) {
