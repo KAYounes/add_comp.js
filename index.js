@@ -33,8 +33,8 @@ if (!PathHandler.insideProject()) {
 
 const state = [];
 
-// Create /src/componets directory
-fs.mkdirSync(PathHandler.__componets_dir, { recursive: true });
+// Create /src/components directory
+fs.mkdirSync(PathHandler.__components_dir, { recursive: true });
 
 const component = new Component(config.getNameTokens(), configs);
 
@@ -51,12 +51,12 @@ state.push([2, 'create css file', false]);
 state.push([3, 'create index file', false]);
 
 // create directories src/components/COMPONENT_NAME
-const COMPONENT_DIR_PATH = path.join(PathHandler.__componets_dir, component.COMPONENT_NAME);
+const COMPONENT_DIR_PATH = path.join(PathHandler.__components_dir, component.COMPONENT_NAME);
 fs.mkdirSync(COMPONENT_DIR_PATH, { recursive: true });
 
 // if dir not empty exit
 if (fs.readdirSync(COMPONENT_DIR_PATH).length !== 0) {
-  const RELATIVE_PATH = PathHandler.createProjectRelativePath(`src/componets/${component.COMPONENT_NAME}`);
+  const RELATIVE_PATH = PathHandler.createProjectRelativePath(`src/components/${component.COMPONENT_NAME}`);
   Logger.logSection('TERMINATING', 'red');
   Logger.logKeyValue('reason', `directory is not empty => "${RELATIVE_PATH}"`, 'yellow');
   Logger.logBlanks(1);

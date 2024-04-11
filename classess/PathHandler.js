@@ -6,7 +6,7 @@ import Validations from './Validations.js';
 class PathHandler {
   static __dirname = path.dirname(path.resolve(fileURLToPath(import.meta.url), '..'));
   static __project_root = path.dirname(this.getPathTo('package.json', process.argv0));
-  static __componets_dir = this.createPathInProject('src/componets');
+  static __components_dir = this.createPathInProject('src/components');
   static __component_template_path = this.createPathInPackage('template.js');
 
   static insideProject() {
@@ -22,7 +22,7 @@ class PathHandler {
   }
 
   static createPathInComponent(componentName, query) {
-    return path.join(this.__componets_dir, componentName, query);
+    return path.join(this.__components_dir, componentName, query);
   }
 
   static createProjectRelativePath(dest) {
