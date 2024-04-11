@@ -198,6 +198,12 @@ class ProjectConfigurationsHandler {
 }
 
 class ConfigurationItem {
+  ITEM_KEY;
+  CLI_OPTION;
+  DEFAULT;
+  CLI_OPTION_KEY;
+  NEGATED_CLI_OPTION;
+
   constructor({ itemKey, defaultValue, cliOption, negateCLIOption }) {
     if (!Validations.isDefined(itemKey, defaultValue, cliOption)) {
       throw Error(chalk.red('ConfigurationItem Constructor: required parameters missing'));
@@ -226,6 +232,14 @@ class ConfigurationItem {
     long = long.trim().replace(/^--/, '--no-');
     let flag = `${short}, ${long}`;
     return new Option(flag);
+  }
+
+  getFlags() {
+    return this.CLI_OPTION.short + ' ' + (this.CLI_OPTION.flags.match(/(?<=--.*)(?<=\s).*/)?.[0] ?? '');
+  }
+
+  getDescription() {
+    return this.CLI_OPTION.description;
   }
 }
 
