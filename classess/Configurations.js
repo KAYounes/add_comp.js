@@ -88,9 +88,9 @@ class Configuration {
 
   getMergedConfiguration() {
     return {
-      ...this.#getDefualtConfigurations(),
-      ...this.#getProjectConfigurations(),
-      ...this.#getCLIConfigurations(),
+      ...this.getDefualtConfigurations(),
+      ...this.getProjectConfigurations(),
+      ...this.getCLIConfigurations(),
     };
   }
 
@@ -98,11 +98,11 @@ class Configuration {
     return this.#CLIConfigs.getArguments();
   }
 
-  #getDefualtConfigurations() {
+  getDefualtConfigurations() {
     return this.#DEFAULT_CONFIG;
   }
 
-  #getCLIConfigurations() {
+  getCLIConfigurations() {
     const CLI_CONFIGS_UNMAPPED = this.#CLIConfigs.getOptions();
 
     const CLI_CONFIGS = {};
@@ -115,7 +115,7 @@ class Configuration {
     return CLI_CONFIGS;
   }
 
-  #getProjectConfigurations() {
+  getProjectConfigurations() {
     const projectConfiguration = {};
 
     for (let key of this.#CONFIG_ITEMS_KEYS) {
