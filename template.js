@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "CSS_FILE_NAME"
+import styles from "./CSS_FILE_NAME"
 
 export default function COMPONENT_NAME({ CHILDREN_PROPS }) {
 function COMPONENT_NAME({ CHILDREN_PROPS }) {
