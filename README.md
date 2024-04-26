@@ -101,9 +101,6 @@ Options:
 > export { default } from './ButtonGroupGird.tsx';
 > ```
 >
-> ```
->
-> ```
 
 ## Using The Command Line
 
